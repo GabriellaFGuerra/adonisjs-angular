@@ -10,13 +10,13 @@ export default class ItemsController {
     }
 
     async store({ request, response }: HttpContext) {
-        const payload = await request.validateUsing({ createItemValidator })
+        const payload = await request.validateUsing(createItemValidator)
         const item = await Item.create(payload)
         return response.status(201).json({item})
     }
 
     async update({ request, response, params }: HttpContext) {
-        const payload = await request.validateUsing({ createItemValidator })
+        const payload = await request.validateUsing(createItemValidator)
         const item = await Item.findOrFail(params.id)
         item.merge(payload)
         await item.save()
