@@ -2,11 +2,7 @@ import type { HttpContext } from "@adonisjs/core/http"
 import Order from "#models/order"
 import Customer from "#models/customer"
 import Item from "#models/item"
-import {
-  createOrderValidator,
-  createItemValidator,
-  updateStatusValidator,
-} from "#validators/order"
+import { createOrderValidator, updateStatusValidator } from "#validators/order"
 import db from "@adonisjs/lucid/services/db"
 
 export default class OrdersController {
@@ -16,17 +12,13 @@ export default class OrdersController {
   }
 
   async store({ request, response }: HttpContext) {
-    const payload = await request.validateUsing({ createOrderValidator })
+    const payload = await request.validateUsing(createOrderValidator)
     const customer = await Customer.findOrFail(payload.customerId)
 
     let totalPrice = 0
     let itemsData = []
 
     for (const item of payload.items) {
-      const itemPayload = await request.validateUsing(
-        { createItemValidator },
-        { data: item }
-      )
       const itemRecord = await Item.findOrFail(item.itemId)
       if (!itemRecord.isActive) {
         return response.status(400).json({ error: `Item inativo` })
@@ -62,8 +54,15 @@ export default class OrdersController {
     return response.status(201).json({ order })
   }
 
+  async show({ response, params }: HttpContext) {
+    const order = await Order.findOrFail(params.id)
+    await order.load("orderItems")
+    await order.load("customer")
+    return response.json({ order })
+  }
+
   async updateStatus({ request, response, params }: HttpContext) {
-    const payload = await request.validateUsing({ updateStatusValidator })
+    const payload = await request.validateUsing(updateStatusValidator)
     const order = await Order.findOrFail(params.id)
 
     type Status =
@@ -88,6 +87,28 @@ export default class OrdersController {
 
     order.status = payload.status
     await order.save()
+    await order.load("orderItems")
+    await order.load("customer")
+    return response.json({ order })
+  }
+
+  async removeItem({ request, response, params }: HttpContext) {
+    const order = await Order.findOrFail(params.id)
+    const { itemId } = request.body()
+
+    const orderItem = await order
+      .related("orderItems")
+      .query()
+      .where("itemId", itemId)
+      .first()
+
+    if (!orderItem) {
+      return response
+        .status(404)
+        .json({ error: "Item não encontrado no pedido" })
+    }
+
+    await orderItem.delete()
     await order.load("orderItems")
     await order.load("customer")
     return response.json({ order })

@@ -95,24 +95,24 @@ export interface Registry {
     methods: ["POST"]
     pattern: '/order'
     types: {
-      body: {}
+      body: ExtractBody<InferInput<(typeof import('#validators/order').createOrderValidator)>>
       paramsTuple: []
       params: {}
-      query: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/order').createOrderValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/orders_controller').default['store']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/orders_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/orders_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'orders.update_status': {
     methods: ["PUT"]
     pattern: '/order/:id'
     types: {
-      body: {}
+      body: ExtractBody<InferInput<(typeof import('#validators/order').updateStatusValidator)>>
       paramsTuple: [ParamValue]
       params: { id: ParamValue }
-      query: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/order').updateStatusValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/orders_controller').default['updateStatus']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/orders_controller').default['updateStatus']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/orders_controller').default['updateStatus']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'auth.new_account.store': {
