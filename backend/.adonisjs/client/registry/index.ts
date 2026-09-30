@@ -6,6 +6,60 @@ import type { ApiDefinition } from './tree.d.ts'
 const placeholder: any = {}
 
 const routes = {
+  'customers.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/customer',
+    tokens: [{"old":"/customer","type":0,"val":"customer","end":""}],
+    types: placeholder as Registry['customers.index']['types'],
+  },
+  'customers.store': {
+    methods: ["POST"],
+    pattern: '/customer',
+    tokens: [{"old":"/customer","type":0,"val":"customer","end":""}],
+    types: placeholder as Registry['customers.store']['types'],
+  },
+  'customers.update': {
+    methods: ["PUT"],
+    pattern: '/customer/:id',
+    tokens: [{"old":"/customer/:id","type":0,"val":"customer","end":""},{"old":"/customer/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['customers.update']['types'],
+  },
+  'items.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/item',
+    tokens: [{"old":"/item","type":0,"val":"item","end":""}],
+    types: placeholder as Registry['items.index']['types'],
+  },
+  'items.store': {
+    methods: ["POST"],
+    pattern: '/item',
+    tokens: [{"old":"/item","type":0,"val":"item","end":""}],
+    types: placeholder as Registry['items.store']['types'],
+  },
+  'items.update': {
+    methods: ["PUT"],
+    pattern: '/item/:id',
+    tokens: [{"old":"/item/:id","type":0,"val":"item","end":""},{"old":"/item/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['items.update']['types'],
+  },
+  'orders.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/order',
+    tokens: [{"old":"/order","type":0,"val":"order","end":""}],
+    types: placeholder as Registry['orders.index']['types'],
+  },
+  'orders.store': {
+    methods: ["POST"],
+    pattern: '/order',
+    tokens: [{"old":"/order","type":0,"val":"order","end":""}],
+    types: placeholder as Registry['orders.store']['types'],
+  },
+  'orders.update_status': {
+    methods: ["PUT"],
+    pattern: '/order/:id',
+    tokens: [{"old":"/order/:id","type":0,"val":"order","end":""},{"old":"/order/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['orders.update_status']['types'],
+  },
   'auth.new_account.store': {
     methods: ["POST"],
     pattern: '/api/v1/auth/signup',
