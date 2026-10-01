@@ -6,28 +6,20 @@ export class Customers {
   private http = inject(HttpClient)
 
   getCustomers() {
-    return this.http.get<{ customers: any[] }>(
-      "https://special-goggles-rp7v44v5v76fp55r-3333.app.github.dev/customers"
-    )
+    return this.http.get<{ customers: any[] }>("https://localhost/customers")
   }
 
   createCustomer(name: string, phone: string) {
-    return this.http.post(
-      "https://special-goggles-rp7v44v5v76fp55r-3333.app.github.dev/customers",
-      {
-        name,
-        phone,
-      }
-    )
+    return this.http.post("https://localhost/customers", {
+      name,
+      phone,
+    })
   }
 
   updateCustomer(customer: any) {
-    return this.http.put(
-      `https://special-goggles-rp7v44v5v76fp55r-3333.app.github.dev/customers/${customer.id}`,
-      {
-        name: customer.name,
-        phone: customer.phone,
-      }
-    )
+    return this.http.put(`https://localhost/customers/${customer.id}`, {
+      name: customer.name,
+      phone: customer.phone,
+    })
   }
 }

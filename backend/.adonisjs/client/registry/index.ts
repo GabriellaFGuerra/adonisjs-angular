@@ -56,9 +56,15 @@ const routes = {
   },
   'orders.update_status': {
     methods: ["PUT"],
+    pattern: '/orders/:id/status',
+    tokens: [{"old":"/orders/:id/status","type":0,"val":"orders","end":""},{"old":"/orders/:id/status","type":1,"val":"id","end":""},{"old":"/orders/:id/status","type":0,"val":"status","end":""}],
+    types: placeholder as Registry['orders.update_status']['types'],
+  },
+  'orders.show': {
+    methods: ["GET","HEAD"],
     pattern: '/orders/:id',
     tokens: [{"old":"/orders/:id","type":0,"val":"orders","end":""},{"old":"/orders/:id","type":1,"val":"id","end":""}],
-    types: placeholder as Registry['orders.update_status']['types'],
+    types: placeholder as Registry['orders.show']['types'],
   },
   'auth.new_account.store': {
     methods: ["POST"],

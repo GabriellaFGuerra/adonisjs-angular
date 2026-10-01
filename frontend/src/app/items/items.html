@@ -1,30 +1,244 @@
-<h2>Lista de Itens</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
 
-@for(item of items; track item.id) {
-<div>
-    <strong>{{ item.name }}</strong> - R${{ item.price }} - Status: {{ item.isActive }}
+    <div>
+        <h2 class="mb-1">Itens</h2>
+        <p class="text-muted mb-0">
+            Gerencie os itens disponíveis
+        </p>
+    </div>
+
 </div>
-<button (click)="editItem(item)">Editar</button>
-}
 
-@if(editingItemId !== null) {
-<h2>Editando Item</h2>
-<input type="text" placeholder="Nome" [(ngModel)]="name">
-<input type="number" placeholder="Preço" [(ngModel)]="price">
-<select [(ngModel)]="is_active">
-    <option value="1">Ativo</option>
-    <option value="0">Inativo</option>
-</select>
-<button (click)="updateItem()">Atualizar</button>
-<button (click)="clearEdit()">Cancelar</button>
-} @else {
 
-<h2>Adicionar Item</h2>
-<input type="text" placeholder="Nome" [(ngModel)]="name">
-<input type="number" placeholder="Preço" [(ngModel)]="price">
-<select [(ngModel)]="is_active">
-    <option value="1">Ativo</option>
-    <option value="0">Inativo</option>
-</select>
-<button (click)="createItem(name, price, is_active)">Adicionar</button>
-}
+<!-- FORMULÁRIO -->
+
+<div class="card shadow-sm mb-4">
+
+    <div class="card-body">
+
+        @if (editingItemId !== null) {
+
+        <h5 class="mb-3">
+            Editar item
+        </h5>
+
+        } @else {
+
+        <h5 class="mb-3">
+            Novo item
+        </h5>
+
+        }
+
+
+        <div class="row g-3">
+
+            <div class="col-md-5">
+
+                <label class="form-label">
+                    Nome
+                </label>
+
+                <input type="text" class="form-control" placeholder="Nome do item" [(ngModel)]="name">
+
+            </div>
+
+
+            <div class="col-md-3">
+
+                <label class="form-label">
+                    Preço
+                </label>
+
+                <div class="input-group">
+
+                    <span class="input-group-text">
+                        R$
+                    </span>
+
+                    <input type="number" step="0.01" min="0" class="form-control" [(ngModel)]="price">
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-2">
+
+                <label class="form-label">
+                    Status
+                </label>
+
+                <select class="form-select" [(ngModel)]="is_active">
+
+                    <option value="1">
+                        Ativo
+                    </option>
+
+                    <option value="0">
+                        Inativo
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="col-md-2 d-flex align-items-end">
+
+                @if (editingItemId !== null) {
+
+                <button class="btn btn-primary w-100" (click)="updateItem()">
+                    Atualizar
+                </button>
+
+                } @else {
+
+                <button class="btn btn-success w-100" (click)="createItem(name, price, is_active)">
+                    Cadastrar
+                </button>
+
+                }
+
+            </div>
+
+        </div>
+
+
+        @if (editingItemId !== null) {
+
+        <button class="btn btn-link px-0 mt-2" (click)="clearEdit()">
+            Cancelar edição
+        </button>
+
+        }
+
+    </div>
+
+</div>
+
+
+<!-- LISTA DE ITENS -->
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+
+            <div>
+
+                <h5 class="mb-1">
+                    Itens cadastrados
+                </h5>
+
+                <small class="text-muted">
+                    {{ items().length }} item(ns)
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle mb-0">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Item
+                        </th>
+
+                        <th>
+                            Preço
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th class="text-end">
+                            Ações
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    @for (item of items(); track item.id) {
+
+                    <tr>
+
+                        <td>
+
+                            <strong>
+                                {{ item.name }}
+                            </strong>
+
+                        </td>
+
+
+                        <td>
+
+                            R$ {{ item.price }}
+
+                        </td>
+
+
+                        <td>
+
+                            @if (item.isActive == 1) {
+
+                            <span class="badge text-bg-success">
+                                Ativo
+                            </span>
+
+                            } @else {
+
+                            <span class="badge text-bg-secondary">
+                                Inativo
+                            </span>
+
+                            }
+
+                        </td>
+
+
+                        <td class="text-end">
+
+                            <button class="btn btn-sm btn-outline-primary" (click)="editItem(item)">
+                                Editar
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                    } @empty {
+
+                    <tr>
+
+                        <td colspan="4" class="text-center text-muted py-4">
+                            Nenhum item cadastrado.
+                        </td>
+
+                    </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

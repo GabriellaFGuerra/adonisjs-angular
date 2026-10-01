@@ -1,24 +1,156 @@
-<h2>Lista de Clientes</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
 
-@for (customer of customers; track customer.id) {
-<p>{{ customer.name }}</p>
-<p>{{ customer.phone }}</p>
-<button (click)="editCustomer(customer)">Editar</button>
-}
+    <div>
+        <h2 class="mb-1">Clientes</h2>
+        <p class="text-muted mb-0">
+            Cadastre e gerencie os clientes
+        </p>
+    </div>
 
-@if (editingCustomerId !== null) {
-<h2>Editando cliente</h2>
-<input type="text" placeholder="Nome" [(ngModel)]="name">
-<input type="text" placeholder="Telefone" [(ngModel)]="phone">
-<button (click)="updateCustomer()">Atualizar</button>
-<button (click)="clearEdit()">Cancelar</button>
-} @else {
-
-<h2>Novo cliente</h2>
+</div>
 
 
-<input type="text" placeholder="Nome" [(ngModel)]="name">
-<input type="text" placeholder="Telefone" [(ngModel)]="phone">
+<div class="card shadow-sm mb-4">
 
-<button (click)="createCustomer()">Cadastrar</button>
-}
+    <div class="card-body">
+
+        @if (editingCustomerId !== null) {
+
+        <h5 class="mb-3">
+            Editar cliente
+        </h5>
+
+        } @else {
+
+        <h5 class="mb-3">
+            Novo cliente
+        </h5>
+
+        }
+
+
+        <div class="row g-3">
+
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    Nome
+                </label>
+
+                <input type="text" class="form-control" placeholder="Nome do cliente" [(ngModel)]="name">
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <label class="form-label">
+                    Telefone
+                </label>
+
+                <input type="text" class="form-control" placeholder="Telefone" [(ngModel)]="phone">
+
+            </div>
+
+
+            <div class="col-md-2 d-flex align-items-end">
+
+                @if (editingCustomerId !== null) {
+
+                <button class="btn btn-primary w-100" (click)="updateCustomer()">
+                    Atualizar
+                </button>
+
+                } @else {
+
+                <button class="btn btn-success w-100" (click)="createCustomer()">
+                    Cadastrar
+                </button>
+
+                }
+
+            </div>
+
+        </div>
+
+
+        @if (editingCustomerId !== null) {
+
+        <button class="btn btn-link px-0 mt-2" (click)="clearEdit()">
+            Cancelar edição
+        </button>
+
+        }
+
+    </div>
+
+</div>
+
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <h5 class="mb-3">
+            Clientes cadastrados
+        </h5>
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle mb-0">
+
+                <thead>
+
+                    <tr>
+                        <th>Nome</th>
+                        <th>Telefone</th>
+                        <th class="text-end">Ações</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @for (customer of customers(); track customer.id) {
+
+                    <tr>
+
+                        <td>
+                            {{ customer.name }}
+                        </td>
+
+                        <td>
+                            {{ customer.phone }}
+                        </td>
+
+                        <td class="text-end">
+
+                            <button class="btn btn-sm btn-outline-primary" (click)="editCustomer(customer)">
+                                Editar
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                    } @empty {
+
+                    <tr>
+
+                        <td colspan="3" class="text-center text-muted py-4">
+                            Nenhum cliente cadastrado.
+                        </td>
+
+                    </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

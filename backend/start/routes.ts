@@ -25,7 +25,8 @@ router.put("/items/:id", [controllers.Items, "update"])
 
 router.get("/orders", [controllers.Orders, "index"])
 router.post("/orders", [controllers.Orders, "store"])
-router.put("/orders/:id", [controllers.Orders, "updateStatus"])
+router.put("/orders/:id/status", [controllers.Orders, "updateStatus"])
+router.get("/orders/:id", [controllers.Orders, "show"])
 
 router
   .group(() => {

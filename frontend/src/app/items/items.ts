@@ -1,20 +1,22 @@
-import { Component, inject } from "@angular/core"
+import { Component, inject, signal } from "@angular/core"
 import { Items as ItemsService } from "../services/items"
 import { FormsModule } from "@angular/forms"
 
 @Component({
-  imports: [FormsModule],
   selector: "app-items",
-  styleUrl: "./items.css",
+  imports: [FormsModule],
   templateUrl: "./items.html",
+  styleUrl: "./items.css",
 })
 export class Items {
   private itemsService = inject(ItemsService)
 
-  items: any[] = []
+  items = signal<any[]>([])
+
   name = ""
   price = 0
-  is_active = "true"
+  is_active = "1"
+
   editingItemId: number | null = null
 
   constructor() {
@@ -22,8 +24,8 @@ export class Items {
   }
 
   getItems() {
-    this.itemsService.getItems().subscribe((items) => {
-      this.items = items.items
+    this.itemsService.getItems().subscribe((response) => {
+      this.items.set(response.items)
     })
   }
 
@@ -55,6 +57,7 @@ export class Items {
         price: this.price,
         is_active: this.is_active === "1",
       }
+
       this.itemsService.updateItem(updatedItem).subscribe(() => {
         this.clearEdit()
         this.getItems()

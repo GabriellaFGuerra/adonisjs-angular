@@ -1,15 +1,10 @@
-import { Component, signal } from "@angular/core"
-import { RouterOutlet } from "@angular/router"
-import { Customers } from "./customers/customers"
-import { Items } from "./items/items"
-import { Orders } from "./orders/orders"
+import { Component } from "@angular/core"
+import { RouterLink, RouterOutlet } from "@angular/router"
 
 @Component({
-  imports: [RouterOutlet, Customers, Items, Orders],
   selector: "app-root",
-  styleUrl: "./app.css",
+  imports: [RouterLink, RouterOutlet],
   templateUrl: "./app.html",
+  styleUrl: "./app.css",
 })
-export class App {
-  protected readonly title = signal("frontend")
-}
+export class App {}

@@ -13,6 +13,7 @@ export type ScannedRoutes = {
     'orders.index': { paramsTuple?: []; params?: {} }
     'orders.store': { paramsTuple?: []; params?: {} }
     'orders.update_status': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'orders.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'auth.new_account.store': { paramsTuple?: []; params?: {} }
     'auth.access_tokens.store': { paramsTuple?: []; params?: {} }
     'profile.profile.show': { paramsTuple?: []; params?: {} }
@@ -22,12 +23,14 @@ export type ScannedRoutes = {
     'customers.index': { paramsTuple?: []; params?: {} }
     'items.index': { paramsTuple?: []; params?: {} }
     'orders.index': { paramsTuple?: []; params?: {} }
+    'orders.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'profile.profile.show': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
     'customers.index': { paramsTuple?: []; params?: {} }
     'items.index': { paramsTuple?: []; params?: {} }
     'orders.index': { paramsTuple?: []; params?: {} }
+    'orders.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'profile.profile.show': { paramsTuple?: []; params?: {} }
   }
   POST: {

@@ -1,3 +1,330 @@
-<h2>Pedidos:</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+        <h2 class="mb-1">Pedidos</h2>
+
+        <p class="text-muted mb-0">
+            Consulte e gerencie os pedidos
+        </p>
+    </div>
+
+    @if (!showNewOrder) {
+
+    <button class="btn btn-primary" (click)="openNewOrder()">
+        + Novo pedido
+    </button>
+
+    } @else {
+
+    <button class="btn btn-outline-secondary" (click)="cancelNewOrder()">
+        Cancelar
+    </button>
+
+    }
+
+</div>
 
 
+@if (showNewOrder) {
+
+<div class="card shadow-sm mb-5">
+
+    <div class="card-body">
+
+        <h4 class="mb-4">
+            Novo pedido
+        </h4>
+
+
+        <div class="mb-4">
+
+            <label class="form-label">
+                Cliente
+            </label>
+
+            <select class="form-select" [(ngModel)]="customerId">
+
+                <option [ngValue]="null">
+                    Selecione um cliente
+                </option>
+
+                @for (customer of customers(); track customer.id) {
+
+                <option [ngValue]="customer.id">
+                    {{ customer.name }}
+                </option>
+
+                }
+
+            </select>
+
+        </div>
+
+
+        <div class="row g-3 align-items-end">
+
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    Produto
+                </label>
+
+                <select class="form-select" [(ngModel)]="itemId">
+
+                    <option [ngValue]="null">
+                        Selecione um produto
+                    </option>
+
+                    @for (item of items(); track item.id) {
+
+                    @if (item.isActive) {
+
+                    <option [ngValue]="item.id">
+                        {{ item.name }} -
+                        R$ {{ item.price | number:'1.2-2' }}
+                    </option>
+
+                    }
+
+                    }
+
+                </select>
+
+            </div>
+
+
+            <div class="col-md-3">
+
+                <label class="form-label">
+                    Quantidade
+                </label>
+
+                <input type="number" min="1" class="form-control" [(ngModel)]="quantity">
+
+            </div>
+
+
+            <div class="col-md-3">
+
+                <button class="btn btn-primary w-100" (click)="addItem()">
+                    Adicionar produto
+                </button>
+
+            </div>
+
+        </div>
+
+
+        @if (orderItems.length > 0) {
+
+        <hr class="my-4">
+
+        <h5 class="mb-3">
+            Produtos do pedido
+        </h5>
+
+
+        @for (orderItem of orderItems; track $index) {
+
+        <div class="d-flex justify-content-between align-items-center border-bottom py-3">
+
+            <div>
+
+                <strong>
+                    {{ getItem(orderItem.itemId)?.name }}
+                </strong>
+
+                <span class="text-muted ms-2">
+                    x {{ orderItem.quantity }}
+                </span>
+
+                <small class="d-block text-muted">
+                    R$
+                    {{ getItem(orderItem.itemId)?.price }}
+                    cada
+                </small>
+
+            </div>
+
+
+            <div class="d-flex align-items-center gap-3">
+
+                <strong>
+                    R$
+                    {{
+                    (getItem(orderItem.itemId)?.price || 0)
+                    * orderItem.quantity
+                    }}
+                </strong>
+
+                <button class="btn btn-sm btn-outline-danger" (click)="removeItem($index)">
+                    Remover
+                </button>
+
+            </div>
+
+        </div>
+
+        }
+
+
+        <div class="d-flex justify-content-between align-items-center mt-4">
+
+            <strong class="fs-5">
+                Total
+            </strong>
+
+            <strong class="fs-5">
+                R$ {{ getTotal() }}
+            </strong>
+
+        </div>
+
+        }
+
+
+        <div class="d-flex justify-content-end mt-4">
+
+            <button class="btn btn-success" (click)="createOrder()">
+                Finalizar pedido
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+}
+
+
+@if (!showNewOrder) {
+
+<h5 class="mb-3">
+    Pedidos cadastrados
+</h5>
+
+
+@for (order of orders(); track order.id) {
+
+<div class="card shadow-sm mb-3">
+
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between align-items-start">
+
+            <div>
+
+                <h5 class="mb-2">
+                    Pedido #{{ order.id }}
+                </h5>
+
+                <p class="mb-1">
+                    <strong>Cliente:</strong>
+                    {{ order.customer?.name }}
+                </p>
+
+                <p class="mb-1">
+                    <strong>Data:</strong>
+                    {{ order.createdAt | date:'dd/MM/yyyy HH:mm' }}
+                </p>
+
+                <p class="mb-0">
+                    <strong>Valor:</strong>
+                    R$ {{ order.totalPrice | number:'1.2-2' }}
+                </p>
+
+            </div>
+
+
+            <div class="text-end">
+
+                <span class="badge mb-3" [class.text-bg-warning]="order.status === 'pendente'"
+                    [class.text-bg-info]="order.status === 'em_preparacao'"
+                    [class.text-bg-primary]="order.status === 'pronto'"
+                    [class.text-bg-success]="order.status === 'finalizado'"
+                    [class.text-bg-danger]="order.status === 'cancelado'">
+
+                    {{
+                    order.status === 'pendente'
+                    ? 'Pendente'
+                    : order.status === 'em_preparacao'
+                    ? 'Em preparação'
+                    : order.status === 'pronto'
+                    ? 'Pronto'
+                    : order.status === 'finalizado'
+                    ? 'Finalizado'
+                    : 'Cancelado'
+                    }}
+
+                </span>
+
+
+                <div>
+
+                    <a class="btn btn-sm btn-outline-primary" [routerLink]="['/orders', order.id]">
+                        Ver pedido
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <hr>
+
+
+        <div class="d-flex align-items-center gap-2">
+
+            <label class="form-label mb-0">
+                Alterar status:
+            </label>
+
+            <select class="form-select form-select-sm w-auto" [ngModel]="order.status"
+                (ngModelChange)="updateOrderStatus(order.id, $event)">
+
+                <option value="pendente">
+                    Pendente
+                </option>
+
+                <option value="em_preparacao">
+                    Em preparação
+                </option>
+
+                <option value="pronto">
+                    Pronto
+                </option>
+
+                <option value="finalizado">
+                    Finalizado
+                </option>
+
+                <option value="cancelado">
+                    Cancelado
+                </option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+</div>
+
+} @empty {
+
+<div class="card shadow-sm">
+
+    <div class="card-body text-center text-muted py-5">
+
+        Nenhum pedido cadastrado.
+
+    </div>
+
+</div>
+
+}
+
+}

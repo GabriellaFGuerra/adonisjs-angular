@@ -105,7 +105,7 @@ export interface Registry {
   }
   'orders.update_status': {
     methods: ["PUT"]
-    pattern: '/orders/:id'
+    pattern: '/orders/:id/status'
     types: {
       body: ExtractBody<InferInput<(typeof import('#validators/order').updateStatusValidator)>>
       paramsTuple: [ParamValue]
@@ -113,6 +113,18 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('#validators/order').updateStatusValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/orders_controller').default['updateStatus']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/orders_controller').default['updateStatus']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'orders.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/orders/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/orders_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/orders_controller').default['show']>>>
     }
   }
   'auth.new_account.store': {

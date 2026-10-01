@@ -8,6 +8,14 @@ import db from "@adonisjs/lucid/services/db"
 export default class OrdersController {
   async index({ response }: HttpContext) {
     const orders = await Order.all()
+
+    for (const order of orders) {
+      await order.load("customer")
+      await order.load("orderItems", (query) => {
+        query.preload("item")
+      })
+    }
+
     return response.json({ orders })
   }
 
@@ -56,8 +64,10 @@ export default class OrdersController {
 
   async show({ response, params }: HttpContext) {
     const order = await Order.findOrFail(params.id)
-    await order.load("orderItems")
     await order.load("customer")
+    await order.load("orderItems", (query) => {
+      query.preload("item")
+    })
     return response.json({ order })
   }
 

@@ -16,6 +16,7 @@ export interface ApiDefinition {
     index: typeof routes['orders.index']
     store: typeof routes['orders.store']
     updateStatus: typeof routes['orders.update_status']
+    show: typeof routes['orders.show']
   }
   auth: {
     newAccount: {

@@ -1,19 +1,21 @@
-import { Component, inject } from "@angular/core"
+import { Component, inject, signal } from "@angular/core"
 import { Customers as CustomersService } from "../services/customers"
 import { FormsModule } from "@angular/forms"
+
 @Component({
-  imports: [FormsModule],
   selector: "app-customers",
-  styleUrl: "./customers.css",
+  imports: [FormsModule],
   templateUrl: "./customers.html",
+  styleUrl: "./customers.css",
 })
 export class Customers {
   private customersService = inject(CustomersService)
 
-  customers: any[] = []
+  customers = signal<any[]>([])
 
   name = ""
   phone = ""
+
   editingCustomerId: number | null = null
 
   constructor() {
@@ -21,8 +23,8 @@ export class Customers {
   }
 
   getCustomers() {
-    this.customersService.getCustomers().subscribe((customers) => {
-      this.customers = customers.customers
+    this.customersService.getCustomers().subscribe((response) => {
+      this.customers.set(response.customers)
     })
   }
 
@@ -32,9 +34,11 @@ export class Customers {
       .subscribe(() => {
         this.name = ""
         this.phone = ""
+
         this.getCustomers()
       })
   }
+
   clearEdit() {
     this.editingCustomerId = null
     this.name = ""
@@ -54,10 +58,13 @@ export class Customers {
         name: this.name,
         phone: this.phone,
       }
-      this.customersService.updateCustomer(updatedCustomer).subscribe(() => {
-        this.clearEdit()
-        this.getCustomers()
-      })
+
+      this.customersService
+        .updateCustomer(updatedCustomer)
+        .subscribe(() => {
+          this.clearEdit()
+          this.getCustomers()
+        })
     }
   }
 }
