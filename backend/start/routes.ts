@@ -15,17 +15,17 @@ router.get("/", () => {
   return { hello: "world" }
 })
 
-router.get("/customer", [controllers.Customers, "index"])
-router.post("/customer", [controllers.Customers, "store"])
-router.put("/customer/:id", [controllers.Customers, "update"])
+router.get("/customers", [controllers.Customers, "index"])
+router.post("/customers", [controllers.Customers, "store"])
+router.put("/customers/:id", [controllers.Customers, "update"])
 
-router.get("/item", [controllers.Items, "index"])
-router.post("/item", [controllers.Items, "store"])
-router.put("/item/:id", [controllers.Items, "update"])
+router.get("/items", [controllers.Items, "index"])
+router.post("/items", [controllers.Items, "store"])
+router.put("/items/:id", [controllers.Items, "update"])
 
-router.get("/order", [controllers.Orders, "index"])
-router.post("/order", [controllers.Orders, "store"])
-router.put("/order/:id", [controllers.Orders, "updateStatus"])
+router.get("/orders", [controllers.Orders, "index"])
+router.post("/orders", [controllers.Orders, "store"])
+router.put("/orders/:id", [controllers.Orders, "updateStatus"])
 
 router
   .group(() => {
