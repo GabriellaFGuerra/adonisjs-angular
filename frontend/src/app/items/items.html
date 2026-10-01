@@ -1,0 +1,30 @@
+<h2>Lista de Itens</h2>
+
+@for(item of items; track item.id) {
+<div>
+    <strong>{{ item.name }}</strong> - R${{ item.price }} - Status: {{ item.isActive }}
+</div>
+<button (click)="editItem(item)">Editar</button>
+}
+
+@if(editingItemId !== null) {
+<h2>Editando Item</h2>
+<input type="text" placeholder="Nome" [(ngModel)]="name">
+<input type="number" placeholder="Preço" [(ngModel)]="price">
+<select [(ngModel)]="is_active">
+    <option value="1">Ativo</option>
+    <option value="0">Inativo</option>
+</select>
+<button (click)="updateItem()">Atualizar</button>
+<button (click)="clearEdit()">Cancelar</button>
+} @else {
+
+<h2>Adicionar Item</h2>
+<input type="text" placeholder="Nome" [(ngModel)]="name">
+<input type="number" placeholder="Preço" [(ngModel)]="price">
+<select [(ngModel)]="is_active">
+    <option value="1">Ativo</option>
+    <option value="0">Inativo</option>
+</select>
+<button (click)="createItem(name, price, is_active)">Adicionar</button>
+}
