@@ -1,0 +1,24 @@
+<h2>Lista de Clientes</h2>
+
+@for (customer of customers; track customer.id) {
+<p>{{ customer.name }}</p>
+<p>{{ customer.phone }}</p>
+<button (click)="editCustomer(customer)">Editar</button>
+}
+
+@if (editingCustomerId !== null) {
+<h2>Editando cliente</h2>
+<input type="text" placeholder="Nome" [(ngModel)]="name">
+<input type="text" placeholder="Telefone" [(ngModel)]="phone">
+<button (click)="updateCustomer()">Atualizar</button>
+<button (click)="clearEdit()">Cancelar</button>
+} @else {
+
+<h2>Novo cliente</h2>
+
+
+<input type="text" placeholder="Nome" [(ngModel)]="name">
+<input type="text" placeholder="Telefone" [(ngModel)]="phone">
+
+<button (click)="createCustomer()">Cadastrar</button>
+}
