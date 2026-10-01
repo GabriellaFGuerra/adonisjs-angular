@@ -9,7 +9,7 @@ export type ParamValue = string | number | bigint | boolean
 export interface Registry {
   'customers.index': {
     methods: ["GET","HEAD"]
-    pattern: '/customer'
+    pattern: '/customers'
     types: {
       body: {}
       paramsTuple: []
@@ -21,31 +21,31 @@ export interface Registry {
   }
   'customers.store': {
     methods: ["POST"]
-    pattern: '/customer'
+    pattern: '/customers'
     types: {
-      body: {}
+      body: ExtractBody<InferInput<(typeof import('#validators/customer').createCustomerValidator)>>
       paramsTuple: []
       params: {}
-      query: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/customer').createCustomerValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/customers_controller').default['store']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/customers_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/customers_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'customers.update': {
     methods: ["PUT"]
-    pattern: '/customer/:id'
+    pattern: '/customers/:id'
     types: {
-      body: {}
+      body: ExtractBody<InferInput<(typeof import('#validators/customer').createCustomerValidator)>>
       paramsTuple: [ParamValue]
       params: { id: ParamValue }
-      query: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/customer').createCustomerValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/customers_controller').default['update']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/customers_controller').default['update']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/customers_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'items.index': {
     methods: ["GET","HEAD"]
-    pattern: '/item'
+    pattern: '/items'
     types: {
       body: {}
       paramsTuple: []
@@ -57,31 +57,31 @@ export interface Registry {
   }
   'items.store': {
     methods: ["POST"]
-    pattern: '/item'
+    pattern: '/items'
     types: {
-      body: {}
+      body: ExtractBody<InferInput<(typeof import('#validators/item').createItemValidator)>>
       paramsTuple: []
       params: {}
-      query: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/item').createItemValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/items_controller').default['store']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/items_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/items_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'items.update': {
     methods: ["PUT"]
-    pattern: '/item/:id'
+    pattern: '/items/:id'
     types: {
-      body: {}
+      body: ExtractBody<InferInput<(typeof import('#validators/item').createItemValidator)>>
       paramsTuple: [ParamValue]
       params: { id: ParamValue }
-      query: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/item').createItemValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/items_controller').default['update']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/items_controller').default['update']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/items_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'orders.index': {
     methods: ["GET","HEAD"]
-    pattern: '/order'
+    pattern: '/orders'
     types: {
       body: {}
       paramsTuple: []
@@ -93,7 +93,7 @@ export interface Registry {
   }
   'orders.store': {
     methods: ["POST"]
-    pattern: '/order'
+    pattern: '/orders'
     types: {
       body: ExtractBody<InferInput<(typeof import('#validators/order').createOrderValidator)>>
       paramsTuple: []
@@ -105,7 +105,7 @@ export interface Registry {
   }
   'orders.update_status': {
     methods: ["PUT"]
-    pattern: '/order/:id'
+    pattern: '/orders/:id'
     types: {
       body: ExtractBody<InferInput<(typeof import('#validators/order').updateStatusValidator)>>
       paramsTuple: [ParamValue]
